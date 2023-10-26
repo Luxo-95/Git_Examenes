@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Carrito de Compras</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Carrito de Compras</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Descripción</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${productosEnCarrito}">
+                    <td th:text="${producto.nombre}"></td>
+                    <td th:text="${producto.descripcion}"></td>
+                    <td th:text="'$' + ${producto.precio}"></td>
+                    <td>
+                        <form action="/actualizarCantidad" method="post">
+                            <input type="number" th:value="${producto.cantidad}" min="1" step="1" name="cantidad">
+                            <input type="hidden" th:value="${producto.id}" name="productoId">
+                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                        </form>
+                    </td>
+                    <td th:text="'$' + (${producto.precio} * ${producto.cantidad})"></td>
+                    <td>
+                        <form action="/eliminarProducto" method="post">
+                            <input type="hidden" th:value="${producto.id}" name="productoId">
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <h3 th:text="'Total: $' + ${totalCompra}"></h3>
+            <form action="/procesarCompra" method="post">
+                <button type="submit" class="btn btn-primary">Procesar Compra</button>
+            </form>
+            <form action="/cancelarCompra" method="post">
+                <button type="submit" class="btn btn-secondary">Cancelar Compra</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
